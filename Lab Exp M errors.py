@@ -36,26 +36,26 @@ ne_error_calc = []
 
 # Partial derivatives
 
-# ∂(ne)/∂V0
-partial_V0 = (9 * d * np.pi * np.sqrt(2) / V0**2) * np.sqrt((n**3 * v0**3) / (g * (p - sigma)))
-
 # ∂(ne)/∂d
 partial_d = -(9 * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0**3) / (g * (p - sigma)))
 
+# ∂(ne)/∂V0
+partial_V0 = (9 * d * np.pi * np.sqrt(2) / V0**2) * np.sqrt((n**3 * v0**3) / (g * (p - sigma)))
+
 # ∂(ne)/∂η
-partial_n = -(27/2 * np.pi * np.sqrt(2) / V0) * np.sqrt((n * v0**3) / (g * (p - sigma)))
+partial_n = -(27/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n * v0**3) / (g * (p - sigma)))
 
 # ∂(ne)/∂v0
-partial_v0 = -(27/2 * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0) / (g * (p - sigma)))
+partial_v0 = -(27/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0) / (g * (p - sigma)))
 
 # ∂(ne)/∂g
-partial_g = (9/2 * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0**3) / (g**3 * (p - sigma)))
+partial_g = (9/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0**3) / (g**3 * (p - sigma)))
 
 # ∂(ne)/∂ρ
-partial_p = (9/2 * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0**3) / (g * (p - sigma)**3))
+partial_p = (9/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0**3) / (g * (p - sigma)**3))
 
 # ∂(ne)/∂σ
-partial_sigma = -(9/2 * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0**3) / (g * (p - sigma)**3))
+partial_sigma = -(9/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0**3) / (g * (p - sigma)**3))
 
 
 
