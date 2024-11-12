@@ -6,76 +6,77 @@
 
 import numpy as np
 
-data = np.loadtxt('INSERT FILE NAME', delimiter='')
+# Load data from CSV file
+data = np.loadtxt('dataexp.csv', delimiter=',')
 
-#VALUES, denoted as (variable) and d(variable) for the uncertainty
-V0_exp = data[:,0] #from csv data collected in lab
-dV0 = 
+# VALUES, denoted as (variable) and d(variable) for the uncertainty
+V0_exp = data[:,0] # from csv data collected in lab
+dV0 = 0.1
 
-d = #from measured thickness of plastic separation  
-dd = 
+d =  0.00756
+dd = 0.00001
 
-n = 18.5e-6  #NOTE: might change due to temp, this value is for 20deg
-dn =
+n_vals = data[:,5]  # NOTE: might change due to temp, this value is for 20°C
+dn_vals = data[:,6]
 
-v0_exp = data[:,1] #from csv data
-dv0 =
+v0 = data[:,1] # from csv data
+dv0 = data[:,2]
 
-p = #density of oil drop
-dp =
+p = 886
+dp = 1
 
-sigma = #density of air
-dsigma =
+sigma_vals = data[:,7]
+dsigma_vals = data[:,-1]
+print(dsigma_vals)
 
-g = 9.81 
-dg =
+g = 9.81174734
+dg = 0.00000003
 
+# Lists to store results
 ne_calc = []
 ne_error_calc = []
 
+# Loop over data to calculate ne and its uncertainty
+for i in range(len(V0_exp)):
+    V0 = float(V0_exp[i])          
+    v = float(v0[i])               
+    dv = float(dv0[i])             
+    n = float(n_vals[i])           
+    dn = float(dn_vals[i])        
+    sigma = float(sigma_vals[i])   
+    dsigma = float(dsigma_vals[i])
 
-
-for V0, v0 in zip(V0_exp, exp):
+    # Calculate ne using the current V0 and v values
+    ne = - (9 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v**3) / (g * (p - sigma)))
     
-    ne = - (9 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((eta**3 * v0**3) / (g * (p - sigma)))
+    # Calculate partial derivatives for the current values of V0 and v
+    partial_d = -(9 * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v**3) / (g * (p - sigma)))
+    partial_V0 = (9 * d * np.pi * np.sqrt(2) / V0**2) * np.sqrt((n**3 * v**3) / (g * (p - sigma)))
+    partial_n = -(27/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n * v**3) / (g * (p - sigma)))
+    partial_v0 = -(27/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v) / (g * (p - sigma)))
+    partial_g = (9/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v**3) / (g**3 * (p - sigma)))
+    partial_p = (9/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v**3) / (g * (p - sigma)**3))
+    partial_sigma = -(9/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v**3) / (g * (p - sigma)**3))
 
-    # Partial derivatives
-
-    # ∂(ne)/∂d
-    partial_d = -(9 * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0**3) / (g * (p - sigma)))
-
-    # ∂(ne)/∂V0
-    partial_V0 = (9 * d * np.pi * np.sqrt(2) / V0**2) * np.sqrt((n**3 * v0**3) / (g * (p - sigma)))
-
-    # ∂(ne)/∂η
-    partial_n = -(27/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n * v0**3) / (g * (p - sigma)))
-    
-    # ∂(ne)/∂v0
-    partial_v0 = -(27/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0) / (g * (p - sigma)))
-
-    # ∂(ne)/∂g
-    partial_g = (9/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0**3) / (g**3 * (p - sigma)))
-
-    # ∂(ne)/∂ρ
-    partial_p = (9/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0**3) / (g * (p - sigma)**3))
-
-    # ∂(ne)/∂σ
-    partial_sigma = -(9/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v0**3) / (g * (p - sigma)**3))
-
-    
+    # Calculate total uncertainty in ne for the current values of V0 and v
     delta_ne = np.sqrt(
-    (partial_V0 * dV0)**2 +
-    (partial_d * dd)**2 +
-    (partial_n * dn)**2 +
-    (partial_v0 * dv0)**2 +
-    (partial_g * dg)**2 +
-    (partial_p * dp)**2 +
-    (partial_sigma * dsigma)**2)
+        (partial_V0 * dV0)**2 +
+        (partial_d * dd)**2 +
+        (partial_n * dn)**2 +
+        (partial_v0 * dv)**2 +
+        (partial_g * dg)**2 +
+        (partial_p * dp)**2 +
+        (partial_sigma * dsigma)**2
+    )
     
+    # Append the calculated ne and uncertainty to the lists
     ne_calc.append(ne)
     ne_error_calc.append(delta_ne)
-    
+
+# Convert lists to arrays for output
+ne_calc = np.array(ne_calc)
+ne_error_calc = np.array(ne_error_calc)
 
 # Results
-results = np.column_stack((ne_calc, ne_error_calc))
-
+print(ne_calc)
+print(ne_error_calc)
