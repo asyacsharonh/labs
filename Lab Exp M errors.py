@@ -5,6 +5,7 @@
 
 
 import numpy as np
+import pandas as pd
 
 # Load data from CSV file
 data = np.loadtxt('dataexp.csv', delimiter=',')
@@ -77,6 +78,12 @@ for i in range(len(V0_exp)):
 ne_calc = np.array(ne_calc)
 ne_error_calc = np.array(ne_error_calc)
 
+df = pd.DataFrame({
+    'ne_calc': ne_calc,
+    'ne_error_calc': ne_error_calc
+})
+
+df.to_csv('ne_results.csv', index=False)
+
 # Results
-print(ne_calc)
-print(ne_error_calc)
+print(df)
