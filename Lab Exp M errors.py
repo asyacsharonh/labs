@@ -7,7 +7,6 @@
 import numpy as np
 import pandas as pd
 
-# Load data from CSV file
 data = np.loadtxt('dataexp.csv', delimiter=',')
 
 # VALUES, denoted as (variable) and d(variable) for the uncertainty
@@ -17,10 +16,10 @@ dV0 = 0.1
 d =  0.00756
 dd = 0.00001
 
-n_vals = data[:,5]  # NOTE: might change due to temp, this value is for 20°C
+n_vals = data[:,5]  
 dn_vals = data[:,6]
 
-v0 = data[:,1] # from csv data
+v0 = data[:,1] 
 dv0 = data[:,2]
 
 p = 886
@@ -37,7 +36,6 @@ dg = 0.00000003
 ne_calc = []
 ne_error_calc = []
 
-# Loop over data to calculate ne and its uncertainty
 for i in range(len(V0_exp)):
     V0 = float(V0_exp[i])          
     v = float(v0[i])               
@@ -59,7 +57,7 @@ for i in range(len(V0_exp)):
     partial_p = (9/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v**3) / (g * (p - sigma)**3))
     partial_sigma = -(9/2 * d * np.pi * np.sqrt(2) / V0) * np.sqrt((n**3 * v**3) / (g * (p - sigma)**3))
 
-    # Calculate total uncertainty in ne for the current values of V0 and v
+    # Calculate uncertainty
     delta_ne = np.sqrt(
         (partial_V0 * dV0)**2 +
         (partial_d * dd)**2 +
