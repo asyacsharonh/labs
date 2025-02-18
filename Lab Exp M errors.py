@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
-
 
 import numpy as np
 import pandas as pd
 
-data = np.loadtxt('dataexp.csv', delimiter=',')
+data = np.loadtxt('dataexp.csv', delimiter=',') # csv file of data collected in lab
 
 # VALUES, denoted as (variable) and d(variable) for the uncertainty
 V0_exp = data[:,0] # from csv data collected in lab
@@ -76,12 +74,6 @@ for i in range(len(V0_exp)):
 ne_calc = np.array(ne_calc)
 ne_error_calc = np.array(ne_error_calc)
 
-df = pd.DataFrame({
-    'ne_calc': ne_calc,
-    'ne_error_calc': ne_error_calc
-})
-
-df.to_csv('ne_results.csv', index=False)
-
 # Results
-print(df)
+print(ne_calc)
+print(ne_error_calc)
